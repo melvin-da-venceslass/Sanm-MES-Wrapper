@@ -14,4 +14,4 @@ services:
       - "8000:8000"
     volumes:
       # Point this at the local clone of the git repo on the host.
-      - /path/to/local/Sanm-MES-Wrapper:/app
+      - /Users/meltina/Documents/Business/Projects/Sanmina/Wrapper:/app

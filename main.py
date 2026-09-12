@@ -11,15 +11,23 @@ from mes_wrapper import send_to_mes, receive_from_mes, verify_unit_children_from
 # Determine which environment (.env.prod / .env.uat) to load before anything
 # else reads configuration from the environment. Falls back to APP_ENV so the
 # app can also be launched via `uvicorn main:app` (e.g. with --workers).
-parser = argparse.ArgumentParser(description="Wrapper Service (MES & CONDUIT)")
-parser.add_argument(
-    "env",
-    nargs="?",
-    default=os.environ.get("APP_ENV", "prod"),
-    choices=["prod", "uat"],
-    help="Environment to run in",
-)
-args, _ = parser.parse_known_args()
+# Only parse CLI args when run directly (`python main.py [env]`); when
+# imported by uvicorn, sys.argv belongs to the uvicorn process itself.
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Wrapper Service (MES & CONDUIT)")
+    parser.add_argument(
+        "env",
+        nargs="?",
+        default=os.environ.get("APP_ENV", "prod"),
+        choices=["prod", "uat"],
+        help="Environment to run in",
+    )
+    args, _ = parser.parse_known_args()
+else:
+    class _Args:
+        env = os.environ.get("APP_ENV", "prod")
+
+    args = _Args()
 
 load_dotenv(f".env.{args.env}")
 

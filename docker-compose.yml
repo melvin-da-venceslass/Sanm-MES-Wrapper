@@ -10,6 +10,9 @@ services:
       APP_ENV: prod          # prod | uat
       UVICORN_WORKERS: "10"
       PORT: "8000"
+      GIT_REPO_URL: ${GIT_REPO_URL:-}
+      GIT_USERNAME: ${GIT_USERNAME:-}
+      GIT_PAT: ${GIT_PAT:-}
     ports:
       - "8000:8000"
     volumes:

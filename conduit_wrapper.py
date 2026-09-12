@@ -25,12 +25,12 @@ def send_to_conduit(payload: dict) -> Response:
 
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {token}",
+        #"Authorization": f"Bearer {token}",
     }
 
     try:
         response = requests.post(
-            url=endpoint_url, json=payload, headers=headers, timeout=10.0
+            url=endpoint_url, json=payload, headers=None, timeout=10.0
         )
 
         try:

@@ -1,14 +1,14 @@
 services:
-  mes-wrapper:
+  mes-wrapper-prod:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: ./Dockerfile
     image: sanm-mes-wrapper:local
-    container_name: sanm-mes-wrapper
+    container_name: sanm-mes-wrapper-prod
     restart: unless-stopped
     environment:
-      APP_ENV: prod          # prod | uat
-      UVICORN_WORKERS: "10"
+      APP_ENV: prod
+      UVICORN_WORKERS: "50"
       PORT: "8000"
       GIT_REPO_URL: ${GIT_REPO_URL:-}
       GIT_USERNAME: ${GIT_USERNAME:-}
@@ -16,5 +16,23 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      # Point this at the local clone of the git repo on the host.
-      - /Users/meltina/Documents/Business/Projects/Sanmina/Wrapper:/app
+      - C:/Users/mviis/deploy/wrapper/app:/app
+
+  mes-wrapper-uat:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: sanm-mes-wrapper:local
+    container_name: sanm-mes-wrapper-uat   # unique name
+    restart: unless-stopped
+    environment:
+      APP_ENV: uat
+      UVICORN_WORKERS: "50"
+      PORT: "8001"   # different internal port
+      GIT_REPO_URL: ${GIT_REPO_URL:-}
+      GIT_USERNAME: ${GIT_USERNAME:-}
+      GIT_PAT: ${GIT_PAT:-}
+    ports:
+      - "8001:8001"   # different host port
+    volumes:
+      - C:/Users/mviis/deploy/wrapper/app:/app

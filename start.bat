@@ -4,13 +4,5 @@ if not exist ".env" (
     exit /b 1
 )
 
-for /f %%i in ('docker compose ps -q mes-wrapper') do set CONTAINER_ID=%%i
-
-if defined CONTAINER_ID (
-    echo Service already running, restarting...
-    docker compose restart mes-wrapper
-) else (
-    docker compose up --build -d
-)
-
-docker compose logs --tail 100 mes-wrapper
+docker compose up --build -d
+docker compose logs --tail 30 mes-wrapper
